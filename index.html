@@ -571,6 +571,12 @@
                     <div class="contact-form-card">
                         <!-- We target Formspree or custom handler. User can update target -->
                         <form id="contactForm" class="contact-form">
+                            <!-- Web3Forms Integration Settings -->
+                            <input type="hidden" name="access_key" value="5024f1ed-a2e8-4bcd-8863-f5c7b69a10af">
+                            <input type="hidden" name="subject" value="New Contact Form Submission - Portfolio Website">
+                            <input type="hidden" name="from_name" value="Portfolio Contact Form">
+                            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
                             <div class="form-group">
                                 <label for="name">Full Name</label>
                                 <input type="text" id="name" name="name" required placeholder="John Doe">

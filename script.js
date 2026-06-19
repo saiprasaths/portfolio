@@ -306,12 +306,39 @@ function initContactForm() {
             formStatus.className = 'form-status';
             formStatus.textContent = 'Sending message...';
             
-            // Mock server transmission delay
-            setTimeout(() => {
-                formStatus.classList.add('success');
-                formStatus.textContent = `Thank you, ${name}! Your message has been sent successfully.`;
-                contactForm.reset();
-            }, 1000);
+            const formData = new FormData(contactForm);
+            
+            // Set dynamic subject line based on user name
+            formData.set('subject', `${name} sent a message from Portfolio Website`);
+            
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+            
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: json
+            })
+            .then(async (response) => {
+                const result = await response.json();
+                if (response.status === 200) {
+                    formStatus.className = 'form-status success';
+                    formStatus.textContent = `Thank you, ${name}! Your message has been sent successfully.`;
+                    contactForm.reset();
+                } else {
+                    console.log(response);
+                    formStatus.className = 'form-status error';
+                    formStatus.textContent = result.message || 'Something went wrong. Please try again later.';
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                formStatus.className = 'form-status error';
+                formStatus.textContent = 'Network error. Please check your connection and try again.';
+            });
         });
     }
 }
