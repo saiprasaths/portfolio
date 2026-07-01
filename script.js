@@ -1,384 +1,590 @@
-/**
- * Sai Prasath S - Portfolio Website Interactivity Script
- */
-
 document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
-    initMobileNav();
-    initResumeModal();
-    initProjectModals();
-    initCardGlowEffects();
-    initContactForm();
-    initScrollSpy();
-});
 
-/* ==========================================================================
-   1. Theme Management (Dark / Light Mode)
-   ========================================================================== */
-function initTheme() {
+    // Global configuration
+    const CONFIG = {
+        availabilityText: 'Open to Full-Time Roles',
+        typingRoles: ['AI & ML Engineer', 'Python Backend Developer', 'GenAI & RAG Specialist'],
+        exploringTopics: [
+            'Multi-Agent Systems',
+            'LLM Fine-tuning',
+            'MLOps Pipelines',
+            'Edge AI Deployment',
+            'Vector Databases',
+            'Agentic AI',
+            'BigQuery Analytics'
+        ]
+    };
+
+    // ==========================================================================
+    // 1. Page Preloader
+    // ==========================================================================
+    const preloader = document.getElementById('preloader');
+    const preloaderBar = document.getElementById('preloaderBar');
+    
+    // Simulate loading progress
+    if (preloaderBar) {
+        let width = 0;
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
+                // Complete load
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    preloader.style.visibility = 'hidden';
+                    document.body.classList.add('loaded');
+                }, 200);
+            } else {
+                width += 10;
+                preloaderBar.style.width = width + '%';
+            }
+        }, 80);
+    } else {
+        document.body.classList.add('loaded');
+    }
+
+    // ==========================================================================
+    // 2. Theme Management with Circular Transition
+    // ==========================================================================
     const themeToggleBtn = document.getElementById('themeToggleBtn');
-    const htmlElement = document.documentElement;
+    const transitionOverlay = document.getElementById('themeTransitionOverlay');
+    const themeColorMeta = document.getElementById('theme-color-meta');
     
-    // Check local storage or system preference
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
-    htmlElement.setAttribute('data-theme', initialTheme);
-    
-    themeToggleBtn.addEventListener('click', () => {
-        const currentTheme = htmlElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        htmlElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-    });
-}
+    // Initialize theme from localStorage or system preferences
+    const getSavedTheme = () => {
+        const saved = localStorage.getItem('theme');
+        if (saved) return saved;
+        return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    };
 
-/* ==========================================================================
-   2. Mobile Navigation Menu Toggle
-   ========================================================================== */
-function initMobileNav() {
+    let currentTheme = getSavedTheme();
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    updateThemeColorMeta(currentTheme);
+
+    function updateThemeColorMeta(theme) {
+        if (themeColorMeta) {
+            themeColorMeta.setAttribute('content', theme === 'dark' ? '#1C1A17' : '#FDFBF7');
+        }
+    }
+
+    let isTransitioning = false;
+
+    themeToggleBtn.addEventListener('click', (e) => {
+        if (isTransitioning) return;
+
+        // Disable animations if prefers-reduced-motion is active
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        if (prefersReducedMotion || !transitionOverlay) {
+            // Instant transition
+            currentTheme = nextTheme;
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            localStorage.setItem('theme', currentTheme);
+            updateThemeColorMeta(currentTheme);
+            return;
+        }
+
+        isTransitioning = true;
+
+        // Circular Reveal Transition
+        const rect = themeToggleBtn.getBoundingClientRect();
+        const clickX = rect.left + rect.width / 2;
+        const clickY = rect.top + rect.height / 2;
+        
+        transitionOverlay.style.setProperty('--click-x', `${clickX}px`);
+        transitionOverlay.style.setProperty('--click-y', `${clickY}px`);
+        
+        // Prepare overlay colors based on the target theme
+        if (nextTheme === 'light') {
+            transitionOverlay.style.backgroundColor = '#FDFBF7';
+        } else {
+            transitionOverlay.style.backgroundColor = '#1C1A17';
+        }
+
+        transitionOverlay.classList.add('animating');
+
+        // Swap the theme tag halfway through reveal (approx 400ms)
+        setTimeout(() => {
+            currentTheme = nextTheme;
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            localStorage.setItem('theme', currentTheme);
+            updateThemeColorMeta(currentTheme);
+        }, 400);
+
+        // Reset overlay when transition ends
+        setTimeout(() => {
+            transitionOverlay.classList.remove('animating');
+            isTransitioning = false;
+        }, 850);
+    });
+
+    // ==========================================================================
+    // 3. Dynamic Greeting & Status Badge
+    // ==========================================================================
+    const heroGreeting = document.getElementById('heroGreeting');
+    const statusBadge = document.getElementById('statusBadge');
+    
+    if (heroGreeting) {
+        const hour = new Date().getHours();
+        let greeting = 'Hello';
+        if (hour >= 5 && hour < 12) {
+            greeting = 'Good morning';
+        } else if (hour >= 12 && hour < 17) {
+            greeting = 'Good afternoon';
+        } else {
+            greeting = 'Good evening';
+        }
+        heroGreeting.textContent = `${greeting}, I'm`;
+    }
+
+    if (statusBadge) {
+        const badgeText = statusBadge.querySelector('.status-text');
+        if (badgeText) {
+            badgeText.textContent = CONFIG.availabilityText;
+        }
+    }
+
+    // ==========================================================================
+    // 4. Role Typing Carousel
+    // ==========================================================================
+    const heroRole = document.getElementById('heroRole');
+    
+    if (heroRole) {
+        let roleIdx = 0;
+        let charIdx = 0;
+        let isDeleting = false;
+        let typingTimer = null;
+
+        const typeEffect = () => {
+            const currentRole = CONFIG.typingRoles[roleIdx];
+            
+            if (isDeleting) {
+                // Delete characters
+                heroRole.textContent = currentRole.substring(0, charIdx - 1);
+                charIdx--;
+            } else {
+                // Type characters
+                heroRole.textContent = currentRole.substring(0, charIdx + 1);
+                charIdx++;
+            }
+
+            let typingSpeed = isDeleting ? 40 : 70;
+
+            if (!isDeleting && charIdx === currentRole.length) {
+                // Pause at complete string
+                typingSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIdx === 0) {
+                isDeleting = false;
+                roleIdx = (roleIdx + 1) % CONFIG.typingRoles.length;
+                typingSpeed = 300;
+            }
+
+            typingTimer = setTimeout(typeEffect, typingSpeed);
+        };
+
+        typeEffect();
+    }
+
+    // ==========================================================================
+    // 5. Reading Progress Bar
+    // ==========================================================================
+    const progressBar = document.getElementById('progressBar');
+    
+    if (progressBar) {
+        let ticking = false;
+        const updateProgressBar = () => {
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = docHeight > 0 ? (window.scrollY / docHeight) : 0;
+            progressBar.style.transform = `scaleX(${scrolled})`;
+            ticking = false;
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(updateProgressBar);
+                ticking = true;
+            }
+        });
+    }
+
+    // ==========================================================================
+    // 6. Sticky Header
+    // ==========================================================================
+    const header = document.getElementById('header');
+    
+    if (header) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    }
+
+    // ==========================================================================
+    // 7. Mobile Navigation Trigger
+    // ==========================================================================
     const mobileNavToggle = document.getElementById('mobileNavToggle');
     const navMenu = document.getElementById('navMenu');
-    const navLinks = document.querySelectorAll('.nav-link');
     
-    mobileNavToggle.addEventListener('click', () => {
-        const isExpanded = mobileNavToggle.getAttribute('aria-expanded') === 'true';
-        mobileNavToggle.setAttribute('aria-expanded', !isExpanded);
-        navMenu.classList.toggle('active');
-    });
-    
-    // Close menu when a link is clicked
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            mobileNavToggle.setAttribute('aria-expanded', 'false');
-            navMenu.classList.remove('active');
+    if (mobileNavToggle && navMenu) {
+        const toggleMenu = () => {
+            const isOpen = document.body.classList.toggle('nav-open');
+            mobileNavToggle.setAttribute('aria-expanded', isOpen);
+        };
+
+        mobileNavToggle.addEventListener('click', toggleMenu);
+
+        // Close on nav link click
+        navMenu.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.body.classList.remove('nav-open');
+                mobileNavToggle.setAttribute('aria-expanded', 'false');
+            });
         });
-    });
-}
 
-/* ==========================================================================
-   3. Resume Viewer Modal
-   ========================================================================== */
-function initResumeModal() {
-    const viewResumeBtn  = document.getElementById('viewResumeBtn');
-    const resumeModal    = document.getElementById('resumeModal');
-    const resumeCloseBtn = document.getElementById('resumeCloseBtn');
-    const resumeIframe   = document.getElementById('resumeIframe');
-
-    if (!viewResumeBtn || !resumeModal) return;
-
-    // Open modal — lazily set iframe src only when first opened
-    viewResumeBtn.addEventListener('click', () => {
-        if (!resumeIframe.getAttribute('src')) {
-            resumeIframe.setAttribute('src', 'assets/resume.pdf');
-        }
-        resumeModal.showModal();
-    });
-
-    // Close button
-    resumeCloseBtn.addEventListener('click', () => {
-        resumeModal.close();
-    });
-
-    // Close on backdrop click (outside the dialog box)
-    resumeModal.addEventListener('click', (e) => {
-        const rect = resumeModal.getBoundingClientRect();
-        if (
-            e.clientX < rect.left ||
-            e.clientX > rect.right ||
-            e.clientY < rect.top  ||
-            e.clientY > rect.bottom
-        ) {
-            resumeModal.close();
-        }
-    });
-}
-
-/* ==========================================================================
-   4. Interactive Projects Modal (Simple & Detailed Views)
-   ========================================================================== */
-const projectDetailsData = {
-    mhm: {
-        title: "Mental Health Monitor (MHM) – Multi-Agent LLM",
-        tag: "AI & Multi-Agent System",
-        techs: ["Python", "Flask", "DistilBERT", "LLMs", "pgvector", "NLP", "Vector Embeddings", "Chart.js"],
-        sections: [
-            {
-                heading: "Project Overview",
-                content: "Designed and implemented a multi-agent LLM-driven mental health monitoring system with context-aware conversational AI for continuous user interactions."
-            },
-            {
-                heading: "Key Accomplishments & Architecture",
-                list: [
-                    "Engineered a Long-Context Cognitive Mapping memory layer using pgvector and vector embeddings to retain longitudinal user context, achieving approximately 82% Top-K retrieval accuracy.",
-                    "Built a DistilBERT + LLM hybrid pipeline for 4-class sentiment classification, achieving approximately 88% emotion detection accuracy.",
-                    "Developed a MIND-SAFE crisis detection framework to override unsafe LLM responses and trigger real-time human intervention alert workflows.",
-                    "Implemented a real-time analytics dashboard to monitor user sentiment trends, crisis indicators, conversation insights, and system performance metrics.",
-                    "Optimized performance through parallel Flask-based multi-agent orchestration, reducing latency by approximately 30% and achieving sub-2-second response time with approximately 95% reliability."
-                ]
-            },
-            {
-                heading: "Privacy & Security",
-                content: "Integrated role-based access control (RBAC) to protect sensitive user data, enforce privacy-aware access permissions, and support secure human-in-the-loop intervention."
+        // Close on click outside menu
+        document.addEventListener('click', (e) => {
+            if (document.body.classList.contains('nav-open') && 
+                !navMenu.contains(e.target) && 
+                !mobileNavToggle.contains(e.target)) {
+                document.body.classList.remove('nav-open');
+                mobileNavToggle.setAttribute('aria-expanded', 'false');
             }
-        ]
-    },
-    ecg: {
-        title: "Real-time ECG Analysis and Classification using Neural Networks",
-        tag: "IoT & Deep Learning",
-        techs: ["Python", "Neural Networks", "IoT Devices", "Signal Processing", "MATLAB", "Hardware Integration"],
-        sections: [
-            {
-                heading: "Project Overview",
-                content: "Developed a portable hardware setup for real-time ECG signal acquisition and pre-processing powered by smartphones or laptops."
-            },
-            {
-                heading: "Technical Implementation",
-                list: [
-                    "Implemented IoT protocols for data transmission from hardware sensors to a dedicated analysis system.",
-                    "Designed a pre-trained convolutional neural network (CNN) for ECG diagnosis, classification of arrhythmia, and health indicator reporting.",
-                    "Configured return channels so that diagnosis results and graphs are instantly sent back to smart devices for accessible patient monitoring.",
-                    "Published research details in IEEE i-PACT 2023 | DOI: 10.1109/i-PACT58649.2023.10434526."
-                ]
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.body.classList.contains('nav-open')) {
+                document.body.classList.remove('nav-open');
+                mobileNavToggle.setAttribute('aria-expanded', 'false');
+                mobileNavToggle.focus();
             }
-        ]
-    },
-    energy: {
-        title: "Energy Meter Reading Using Image Processing",
-        tag: "Computer Vision & OCR",
-        techs: ["Azure Computer Vision", "Google Firebase", "HTML5", "CSS3", "JavaScript"],
-        sections: [
-            {
-                heading: "Project Overview",
-                content: "A web-based portal designed to capture, extract, and record values from electricity/energy meters through image processing and cloud storage."
-            },
-            {
-                heading: "Key Features",
-                list: [
-                    "Built a web-based energy meter reading system that extracts accurate readings from uploaded meter images using Azure Computer Vision OCR.",
-                    "Developed a clean interface for image upload, reading validation, and instant feedback verification.",
-                    "Integrated Google Firebase for secure user authentication, database management, and persistent log storage of extracted readings."
-                ]
-            }
-        ]
-    },
-    robot: {
-        title: "Assisted Emergency Robot for Fire Brigade",
-        tag: "Robotics & Embedded Systems",
-        techs: ["Arduino", "Gas/Flame Sensors", "Bluetooth", "Embedded Systems", "Mobile App Integration"],
-        sections: [
-            {
-                heading: "Project Overview",
-                content: "Developed a Bluetooth-controlled emergency response robot equipped with environmental sensors to monitor dangerous areas and support fire response teams."
-            },
-            {
-                heading: "System Capabilities",
-                list: [
-                    "Equipped the robot with sensors to monitor CO2, nitrogen, temperature, humidity, flame, and smoke levels.",
-                    "Built a real-time monitoring interface to display sensor readings and trigger instant alerts for flame and smoke detection.",
-                    "Designed the system to assist fire brigade teams in remote inspection and telemetry of hazardous, tight, or smoke-filled environments."
-                ]
-            }
-        ]
-    },
-    emotion: {
-        title: "CNN for Emotion Classification in Text",
-        tag: "Natural Language Processing",
-        techs: ["Python", "NLTK", "Keras", "Scikit-learn", "Pandas", "Matplotlib"],
-        sections: [
-            {
-                heading: "Project Overview",
-                content: "Built an NLP pipeline implementing Deep Learning to recognize and categorize various emotion classes from text datasets."
-            },
-            {
-                heading: "Workflow & Optimization",
-                list: [
-                    "Created an end-to-end ML workflow including text preprocessing, tokenization, stop-word removal, and TF-IDF feature extraction.",
-                    "Trained and optimized a CNN architecture using Keras, tuning hyperparameters to improve classification accuracy.",
-                    "Used Scikit-learn for model evaluation, generating confusion matrices, and tracking accuracy/f1-scores across multiple emotion classes."
-                ]
-            }
-        ]
+        });
     }
-};
 
-function initProjectModals() {
-    const projectCards = document.querySelectorAll('.project-card');
-    const projectModal = document.getElementById('projectModal');
-    const modalCloseBtn = document.getElementById('modalCloseBtn');
-    const modalBody = document.getElementById('modalBody');
+    // ==========================================================================
+    // 8. Scroll Reveal (IntersectionObserver)
+    // ==========================================================================
+    const animateElements = document.querySelectorAll('[data-animate]');
     
-    projectCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const projectId = card.getAttribute('data-project-id');
-            const project = projectDetailsData[projectId];
+    if ('IntersectionObserver' in window && animateElements.length > 0) {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.getAttribute('data-delay') || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('revealed');
+                    }, delay);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        animateElements.forEach(el => revealObserver.observe(el));
+    } else {
+        // Fallback for browsers without IntersectionObserver
+        animateElements.forEach(el => el.classList.add('revealed'));
+    }
+
+    // ==========================================================================
+    // 9. Active Section Tracking (Header & Dot Nav Highlight)
+    // ==========================================================================
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const dotLinks = document.querySelectorAll('.dot');
+    
+    if ('IntersectionObserver' in window && sections.length > 0) {
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const activeId = entry.target.getAttribute('id');
+                    
+                    // Update Header Links
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href') === `#${activeId}`);
+                    });
+                    
+                    // Update Dot Nav
+                    dotLinks.forEach(dot => {
+                        dot.classList.toggle('active', dot.getAttribute('href') === `#${activeId}`);
+                    });
+                }
+            });
+        }, {
+            threshold: 0.3
+        });
+
+        sections.forEach(sec => sectionObserver.observe(sec));
+    }
+
+    // ==========================================================================
+    // 10. Animated Stat Counters
+    // ==========================================================================
+    const statNumbers = document.querySelectorAll('.stat-number');
+    
+    if ('IntersectionObserver' in window && statNumbers.length > 0) {
+        const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+        
+        const countUp = (element) => {
+            const target = parseInt(element.getAttribute('data-target'), 10);
+            const prefix = element.getAttribute('data-prefix') || '';
+            const suffix = element.getAttribute('data-suffix') || '';
+            const duration = 1500; // ms
+            const start = 0;
+            const startTime = performance.now();
+
+            const updateCount = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easedProgress = easeOutCubic(progress);
+                const currentVal = Math.floor(start + easedProgress * (target - start));
+                
+                element.textContent = `${prefix}${currentVal.toLocaleString()}${suffix}`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCount);
+                } else {
+                    element.textContent = `${prefix}${target.toLocaleString()}${suffix}`;
+                }
+            };
+
+            requestAnimationFrame(updateCount);
+        };
+
+        const statObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    countUp(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        statNumbers.forEach(num => statObserver.observe(num));
+    } else {
+        // Fallback
+        statNumbers.forEach(num => {
+            const target = num.getAttribute('data-target');
+            const prefix = num.getAttribute('data-prefix') || '';
+            const suffix = num.getAttribute('data-suffix') || '';
+            num.textContent = `${prefix}${target}${suffix}`;
+        });
+    }
+
+    // ==========================================================================
+    // 11. Exploring Ticker Dynamic Content
+    // ==========================================================================
+    const tickerTrack = document.getElementById('tickerTrack');
+    
+    if (tickerTrack) {
+        // Build items list
+        let tickerHtml = '';
+        // Duplicate items array once to enable seamless infinite scroll loop
+        const loopItems = [...CONFIG.exploringTopics, ...CONFIG.exploringTopics];
+        
+        loopItems.forEach((topic) => {
+            tickerHtml += `
+                <div class="ticker-item">
+                    <span>${topic}</span>
+                    <span class="ticker-separator" aria-hidden="true">/</span>
+                </div>
+            `;
+        });
+        
+        tickerTrack.innerHTML = tickerHtml;
+    }
+
+    // ==========================================================================
+    // 12. Skill Category Filter
+    // ==========================================================================
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const skillCards = document.querySelectorAll('.skill-category-card');
+    
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Update active state on button
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
             
-            if (project) {
-                // Populate Modal Content
-                let modalHTML = `
-                    <span class="modal-tag">${project.tag}</span>
-                    <h2>${project.title}</h2>
-                    <div class="modal-techs">
-                        ${project.techs.map(tech => `<span>${tech}</span>`).join('')}
-                    </div>
-                `;
+            const category = btn.getAttribute('data-filter');
+            
+            skillCards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
                 
-                project.sections.forEach(sec => {
-                    modalHTML += `
-                        <div class="modal-section">
-                            <h3>${sec.heading}</h3>
-                    `;
-                    
-                    if (sec.content) {
-                        modalHTML += `<p>${sec.content}</p>`;
-                    }
-                    
-                    if (sec.list) {
-                        modalHTML += `
-                            <ul>
-                                ${sec.list.map(item => `<li>${item}</li>`).join('')}
-                            </ul>
-                        `;
-                    }
-                    
-                    modalHTML += `</div>`;
-                });
-                
-                modalBody.innerHTML = modalHTML;
-                projectModal.showModal();
-            }
+                if (category === 'all' || cardCategory === category) {
+                    card.classList.remove('dimmed');
+                } else {
+                    card.classList.add('dimmed');
+                }
+            });
         });
     });
-    
-    // Close modal action
-    modalCloseBtn.addEventListener('click', () => {
-        projectModal.close();
-    });
-    
-    // Close modal if clicked backdrop
-    projectModal.addEventListener('click', (e) => {
-        const dialogDimensions = projectModal.getBoundingClientRect();
-        if (
-            e.clientX < dialogDimensions.left ||
-            e.clientX > dialogDimensions.right ||
-            e.clientY < dialogDimensions.top ||
-            e.clientY > dialogDimensions.bottom
-        ) {
-            projectModal.close();
-        }
-    });
-}
 
-/* ==========================================================================
-   4. Glow Card Hover Effect
-   ========================================================================== */
-function initCardGlowEffects() {
-    const projectCards = document.querySelectorAll('.project-card');
+    // ==========================================================================
+    // 13. Card Mouse-Follow Glow Effect
+    // ==========================================================================
+    const glowCards = document.querySelectorAll('.skill-category-card, .project-card');
     
-    projectCards.forEach(card => {
+    glowCards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             
-            card.style.setProperty('--x', `${x}px`);
-            card.style.setProperty('--y', `${y}px`);
+            card.style.setProperty('--glow-x', `${x}px`);
+            card.style.setProperty('--glow-y', `${y}px`);
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.setProperty('--glow-x', `-999px`);
+            card.style.setProperty('--glow-y', `-999px`);
         });
     });
-}
 
-/* ==========================================================================
-   5. Contact Form Submission
-   ========================================================================== */
-function initContactForm() {
+    // ==========================================================================
+    // 14. Hero Blobs Parallax Effect
+    // ==========================================================================
+    const hero = document.getElementById('hero');
+    const blob1 = document.getElementById('blob1');
+    const blob2 = document.getElementById('blob2');
+    const blob3 = document.getElementById('blob3');
+    
+    if (hero && blob1 && blob2 && blob3) {
+        let isMoving = false;
+        
+        hero.addEventListener('mousemove', (e) => {
+            if (window.innerWidth < 1024) return; // disable on mobile/tablet
+            
+            if (!isMoving) {
+                window.requestAnimationFrame(() => {
+                    const rect = hero.getBoundingClientRect();
+                    const mouseX = e.clientX - rect.left - rect.width / 2;
+                    const mouseY = e.clientY - rect.top - rect.height / 2;
+                    
+                    // Shift values scaling down for subtle movement
+                    blob1.style.transform = `translate(${mouseX * 0.04}px, ${mouseY * 0.04}px)`;
+                    blob2.style.transform = `translate(${mouseX * -0.03}px, ${mouseY * -0.03}px)`;
+                    blob3.style.transform = `translate(${mouseX * 0.02}px, ${mouseY * -0.02}px)`;
+                    
+                    isMoving = false;
+                });
+                isMoving = true;
+            }
+        });
+
+        hero.addEventListener('mouseleave', () => {
+            blob1.style.transform = 'translate(0, 0)';
+            blob2.style.transform = 'translate(0, 0)';
+            blob3.style.transform = 'translate(0, 0)';
+        });
+    }
+
+    // ==========================================================================
+    // 15. Scroll-To-Top Button
+    // ==========================================================================
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    
+    if (scrollTopBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // ==========================================================================
+    // 16. Contact Form Submission (Web3Forms API integration)
+    // ==========================================================================
     const contactForm = document.getElementById('contactForm');
     const formStatus = document.getElementById('formStatus');
     
-    if (contactForm) {
+    if (contactForm && formStatus) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // Collect Name for the success message
+            // Basic Frontend Validation
             const name = document.getElementById('name').value.trim();
-            
-            formStatus.className = 'form-status';
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+            if (!name || !email || !message) {
+                formStatus.textContent = 'Please fill out all fields.';
+                formStatus.className = 'form-status error';
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                formStatus.textContent = 'Please enter a valid email address.';
+                formStatus.className = 'form-status error';
+                return;
+            }
+
+            // Disable button, show loading
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.7';
+                submitBtn.querySelector('span').textContent = 'Sending...';
+            }
+
             formStatus.textContent = 'Sending message...';
-            
+            formStatus.className = 'form-status';
+
             const formData = new FormData(contactForm);
-            
-            // Set dynamic subject line based on user name
-            formData.set('subject', `${name} sent a message from Portfolio Website`);
-            
-            const object = Object.fromEntries(formData);
-            const json = JSON.stringify(object);
-            
+
             fetch('https://api.web3forms.com/submit', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: json
+                body: formData
             })
             .then(async (response) => {
-                const result = await response.json();
+                let json = await response.json();
                 if (response.status === 200) {
+                    formStatus.textContent = 'Message sent successfully! I will reach out to you shortly.';
                     formStatus.className = 'form-status success';
-                    formStatus.textContent = `Thank you, ${name}! Your message has been sent successfully.`;
                     contactForm.reset();
                 } else {
                     console.log(response);
+                    formStatus.textContent = json.message || 'Something went wrong. Please try again.';
                     formStatus.className = 'form-status error';
-                    formStatus.textContent = result.message || 'Something went wrong. Please try again later.';
                 }
             })
             .catch(error => {
                 console.log(error);
+                formStatus.textContent = 'Failed to submit form. Please check your network connection.';
                 formStatus.className = 'form-status error';
-                formStatus.textContent = 'Network error. Please check your connection and try again.';
+            })
+            .then(() => {
+                // Restore button state
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                    submitBtn.querySelector('span').textContent = 'Send Message';
+                }
+                
+                // Clear message after 5 seconds
+                setTimeout(() => {
+                    formStatus.textContent = '';
+                }, 5000);
             });
         });
     }
-}
-
-/* ==========================================================================
-   6. ScrollSpy for Navigation Highlight
-   ========================================================================== */
-function initScrollSpy() {
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const scrollTopBtn = document.getElementById('scrollTopBtn');
-    
-    window.addEventListener('scroll', () => {
-        let currentSectionId = '';
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop - 120;
-            const sectionHeight = section.offsetHeight;
-            if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-                currentSectionId = section.getAttribute('id');
-            }
-        });
-        
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${currentSectionId}`) {
-                link.classList.add('active');
-            }
-        });
-        
-        // Show/hide scroll-to-top button
-        if (scrollTopBtn) {
-            scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
-        }
-    }, { passive: true });
-    
-    // Scroll to top on button click
-    if (scrollTopBtn) {
-        scrollTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    }
-}
+});

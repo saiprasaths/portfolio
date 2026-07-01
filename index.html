@@ -3,54 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sai Prasath S | AI & ML Engineer Portfolio</title>
+    <title>Sai Prasath S | AI & ML Engineer</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Portfolio of Sai Prasath S, an AI &amp; ML Engineer specializing in GenAI, RAG platforms, BigQuery data pipelines, and intelligent software engineering.">
-    <meta name="keywords" content="Sai Prasath S, AI Engineer, ML Engineer, GenAI, RAG, Python, FastAPI, Software Engineer, Portfolio">
+    <meta name="description" content="Portfolio of Sai Prasath S, an AI & ML Engineer specializing in GenAI, RAG platforms, BigQuery data pipelines, and intelligent Python backend development.">
+    <meta name="keywords" content="Sai Prasath S, AI Engineer, ML Engineer, GenAI, RAG, Python, FastAPI, Backend Engineer, Data Pipeline, Portfolio">
     <meta name="author" content="Sai Prasath S">
-    <meta name="theme-color" content="#f97316" media="(prefers-color-scheme: dark)">
-    <meta name="theme-color" content="#ea580c" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1C1A17" id="theme-color-meta">
     
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Sai Prasath S | AI & ML Engineer">
-    <meta property="og:description" content="Explore projects, experience, and skills of Sai Prasath S, AI & ML Engineer.">
+    <meta property="og:description" content="Explore projects, experience, and technical skills of Sai Prasath S, AI & ML Engineer.">
     <meta property="og:url" content="https://saiprasaths.github.io/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,400&display=swap" rel="stylesheet">
     
     <!-- CSS Stylesheet -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- JSON-LD Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Sai Prasath S",
+      "jobTitle": "AI & ML Engineer",
+      "url": "https://saiprasaths.github.io/",
+      "sameAs": [
+        "https://github.com/saiprasaths",
+        "https://linkedin.com/in/sai-prasath-s",
+        "https://www.kaggle.com/saiprasaths"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Vellore Institute of Technology"
+      },
+      "knowsAbout": [
+        "Artificial Intelligence",
+        "Machine Learning",
+        "Deep Learning",
+        "Generative AI",
+        "Large Language Models (LLMs)",
+        "Retrieval-Augmented Generation (RAG)",
+        "Python",
+        "FastAPI",
+        "Google Cloud Platform (BigQuery)",
+        "Data Engineering"
+      ]
+    }
+    </script>
 </head>
 <body>
-    <!-- Navigation -->
-    <header class="header">
+
+    <!-- Page Preloader -->
+    <div class="preloader" id="preloader" role="dialog" aria-modal="true" aria-label="Loading portfolio">
+        <div class="preloader-content">
+            <div class="preloader-logo" aria-hidden="true"><span class="logo-bracket">&lt;</span>S<span class="logo-bracket"> /&gt;</span></div>
+            <div class="preloader-bar-bg" aria-hidden="true">
+                <div class="preloader-bar" id="preloaderBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Transition Circular Overlay -->
+    <div class="theme-transition-overlay" id="themeTransitionOverlay" aria-hidden="true"></div>
+
+    <!-- Reading Progress Bar -->
+    <div class="progress-container" aria-hidden="true">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Sticky Header & Navigation -->
+    <header class="header" id="header">
         <div class="nav-container">
-            <a href="#" class="logo">
-                <span class="logo-accent">&lt;</span>Sai Prasath<span class="logo-accent"> /&gt;</span>
+            <a href="#hero" class="logo" aria-label="Sai Prasath S - Home">
+                <span class="logo-bracket">&lt;</span>Sai Prasath<span class="logo-bracket"> /&gt;</span>
             </a>
             
             <nav class="nav-menu" id="navMenu">
                 <a href="#about" class="nav-link">About</a>
+                <a href="#experience" class="nav-link">Experience</a>
                 <a href="#skills" class="nav-link">Skills</a>
-                <a href="#resume" class="nav-link">Experience</a>
                 <a href="#projects" class="nav-link">Projects</a>
                 <a href="#achievements" class="nav-link">Achievements</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </nav>
             
             <div class="nav-actions">
-                <button id="themeToggleBtn" class="theme-toggle" aria-label="Toggle light/dark theme">
-                    <!-- Moon Icon (Dark Mode active, click to light) -->
-                    <svg class="icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <!-- Sun Icon (Light Mode active, click to dark) -->
-                    <svg class="icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <button id="themeToggleBtn" class="theme-toggle" aria-label="Toggle light/dark theme" title="Toggle theme">
+                    <!-- Sun Icon (shown when light theme active, transitions to dark) -->
+                    <svg class="icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <circle cx="12" cy="12" r="5"></circle>
                         <line x1="12" y1="1" x2="12" y2="3"></line>
                         <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -61,9 +110,13 @@
                         <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
+                    <!-- Moon Icon (shown when dark theme active, transitions to light) -->
+                    <svg class="icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
                 </button>
                 
-                <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">
                     <span class="bar"></span>
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -72,97 +125,312 @@
         </div>
     </header>
 
-    <main>
+    <!-- Desktop Side Dot Navigation -->
+    <nav class="dot-nav" id="dotNav" aria-label="Quick Section Navigation">
+        <a class="dot active" href="#hero" data-section="hero" aria-label="Top / Home"><span class="dot-tooltip">Home</span></a>
+        <a class="dot" href="#about" data-section="about" aria-label="About Me"><span class="dot-tooltip">About</span></a>
+        <a class="dot" href="#experience" data-section="experience" aria-label="Experience & Journey"><span class="dot-tooltip">Journey</span></a>
+        <a class="dot" href="#skills" data-section="skills" aria-label="Skills & Toolkit"><span class="dot-tooltip">Toolkit</span></a>
+        <a class="dot" href="#projects" data-section="projects" aria-label="Key Projects"><span class="dot-tooltip">Work</span></a>
+        <a class="dot" href="#achievements" data-section="achievements" aria-label="Publications & Recognition"><span class="dot-tooltip">Recognition</span></a>
+        <a class="dot" href="#contact" data-section="contact" aria-label="Contact / Connect"><span class="dot-tooltip">Connect</span></a>
+    </nav>
+
+    <main id="mainContent">
         <!-- Hero Section -->
-        <section class="hero-section" id="home">
-            <div class="hero-bg-glow"></div>
+        <section class="hero-section" id="hero">
+            <div class="hero-bg" aria-hidden="true">
+                <div class="blob blob-1" id="blob1"></div>
+                <div class="blob blob-2" id="blob2"></div>
+                <div class="blob blob-3" id="blob3"></div>
+            </div>
+            
             <div class="container hero-container">
-                <div class="hero-content">
-                    <span class="hero-greeting">Hi, my name is</span>
+                <div class="hero-content" data-animate="fade-up">
+                    <span class="hero-greeting" id="heroGreeting">Hello, I'm</span>
                     <h1 class="hero-name">Sai Prasath S</h1>
-                    <h2 class="hero-title">AI & ML Engineer</h2>
-                    <p class="hero-tagline">Building intelligent, LLM-powered systems and scalable data pipelines to bridge the gap between complex algorithms and real-world impact.</p>
-                    <div class="hero-ctas">
-                        <a href="#projects" class="btn btn-primary">
-                            <span>View My Work</span>
-                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                        </a>
-                        <button id="viewResumeBtn" class="btn btn-secondary" aria-label="View Resume">
-                            <span>View Resume</span>
-                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-                        </button>
+                    <div class="hero-role-wrapper">
+                        <span class="hero-role" id="heroRole"></span>
                     </div>
-                </div>
-                <div class="hero-visual">
-                    <div class="blob-wrapper">
-                        <div class="glowing-blob"></div>
-                        <div class="visual-card">
-                            <div class="card-header">
-                                <span class="dot red"></span>
-                                <span class="dot yellow"></span>
-                                <span class="dot green"></span>
-                            </div>
-                            <div class="card-code">
-                                <span class="code-line line-1"><span class="keyword">const</span> engineer = {</span>
-                                <span class="code-line line-2">&nbsp;&nbsp;name: <span class="string">"Sai Prasath S"</span>,</span>
-                                <span class="code-line line-3">&nbsp;&nbsp;role: <span class="string">"AI & ML Engineer"</span>,</span>
-                                <span class="code-line line-4">&nbsp;&nbsp;focus: [<span class="string">"LLMs"</span>, <span class="string">"RAG Platforms"</span>, <span class="string">"BigData"</span>],</span>
-                                <span class="code-line line-5">&nbsp;&nbsp;code: <span class="keyword">function</span>() {</span>
-                                <span class="code-line line-6">&nbsp;&nbsp;&nbsp;&nbsp;return <span class="keyword">this</span>.buildIntelligentSystems();</span>
-                                <span class="code-line line-7">&nbsp;&nbsp;}</span>
-                                <span class="code-line line-8">};</span>
-                            </div>
-                        </div>
+                    
+                    <div class="status-badge" id="statusBadge" data-animate="fade-up" data-delay="200">
+                        <span class="status-dot" aria-hidden="true"></span>
+                        <span class="status-text">Open to Full-Time Roles</span>
+                    </div>
+                    
+                    <p class="hero-pitch" data-animate="fade-up" data-delay="300">
+                        I build intelligent, LLM-powered systems and scalable data pipelines that bridge the gap between complex algorithms and real-world impact. Focused on Python backend and machine learning.
+                    </p>
+                    
+                    <div class="hero-ctas" data-animate="fade-up" data-delay="400">
+                        <a href="#projects" class="btn btn-primary">
+                            <span>Explore My Work</span>
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                        <a href="assets/resume.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+                            <span>View Resume</span>
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>
+            
+            <a href="#about" class="scroll-indicator" aria-label="Scroll down to About section">
+                <svg class="chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </a>
         </section>
+
+        <!-- Wave Divider 1 -->
+        <div class="wave-divider" aria-hidden="true">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="wave-path"></path>
+            </svg>
+        </div>
 
         <!-- About Section -->
         <section class="about-section" id="about">
             <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">About Me</h2>
-                    <div class="section-bar"></div>
+                <div class="section-header" data-animate="fade-up">
+                    <span class="section-label">01 / ABOUT</span>
+                    <h2 class="section-title font-serif">About Me</h2>
+                    <div class="section-divider"></div>
                 </div>
+                
                 <div class="about-grid">
-                    <div class="about-text">
-                        <p>I am a passionate AI & ML Engineer with a strong foundation in Computer Science and Engineering. Having recently completed an internship as an <strong>AI Intern at Ford Motors Private Limited</strong>, I design and build advanced LLM-powered systems, RAG enterprise knowledge platforms, and high-performance BigQuery data pipelines operating at scale.</p>
-                        <p>With an educational background spanning electronics, instrumentation, and advanced computer science, I possess a unique perspective on bridging the gap between hardware, cloud systems, and cutting-edge artificial intelligence.</p>
-                        <p>I engineer reliable, highly optimized, and responsible AI solutions that make software smarter and enhance operational workflows.</p>
+                    <div class="about-narrative" data-animate="fade-up" data-delay="100">
+                        <p>
+                            I am an AI & ML Engineer with a deep passion for building intelligent systems that solve real-world problems. With a Master's in Computer Science & Engineering and a foundation in Electronics & Instrumentation Engineering, I bring a unique perspective that bridges hardware integrations, cloud software platforms, and cutting-edge artificial intelligence models.
+                        </p>
+                        <p>
+                            During my year-long experience as an <strong>AI Intern at Ford Motors Private Limited</strong>, I designed and deployed production-ready LLM classification engines for manufacturing quality analysis, developed robust microservice APIs in Python, and engineered vector-based enterprise search tools. I thrive in automating complex workflows and deriving value from data pipelines.
+                        </p>
+                        <p>
+                            I'm committed to developing responsible, efficient, and well-designed software architectures that make technology more intuitive. I keep up with generative AI research and continuously seek ways to optimize algorithms for speed and resource efficiency.
+                        </p>
                     </div>
-                    <div class="about-highlights">
-                        <div class="highlight-card">
-                            <div class="card-icon-wrapper">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    
+                    <div class="about-stats" data-animate="fade-up" data-delay="200">
+                        <div class="stat-card">
+                            <div class="stat-number-wrapper">
+                                <span class="stat-number font-serif" data-target="2000" data-suffix="+">0</span>
                             </div>
-                            <h3>Enterprise RAG</h3>
-                            <p>Built enterprise knowledge platforms for 2,000+ docs using hybrid vector search (FAISS + BM25).</p>
+                            <span class="stat-label">Documents Indexed</span>
+                            <span class="stat-context">Enterprise RAG Platform</span>
                         </div>
-                        <div class="highlight-card">
-                            <div class="card-icon-wrapper">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        
+                        <div class="stat-card">
+                            <div class="stat-number-wrapper">
+                                <span class="stat-number font-serif" data-target="30" data-prefix="~" data-suffix="%">0</span>
                             </div>
-                            <h3>Big Data Scale</h3>
-                            <p>Optimized BigQuery pipelines at GB-TB scales, reducing processing times by 30%.</p>
+                            <span class="stat-label">Processing Time Reduced</span>
+                            <span class="stat-context">BigQuery Pipelines at Scale</span>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-number-wrapper font-serif">
+                                <span class="stat-static">GB–TB</span>
+                            </div>
+                            <span class="stat-label">Data Pipeline Scale</span>
+                            <span class="stat-context">Production Big Data Optimization</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exploring Ticker -->
+                <div class="exploring-ticker-container" data-animate="fade-up" data-delay="300">
+                    <div class="ticker-header">
+                        <span class="ticker-dot" aria-hidden="true"></span>
+                        <span class="ticker-title">Currently exploring:</span>
+                    </div>
+                    <div class="ticker-track-wrapper">
+                        <div class="ticker-track" id="tickerTrack">
+                            <!-- JS will populate and loop this dynamically -->
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Wave Divider 2 -->
+        <div class="wave-divider wave-divider-alt" aria-hidden="true">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,1,321.39,56.44Z" class="wave-path"></path>
+            </svg>
+        </div>
+
+        <!-- Experience Section -->
+        <section class="experience-section" id="experience">
+            <div class="container">
+                <div class="section-header" data-animate="fade-up">
+                    <span class="section-label">02 / JOURNEY</span>
+                    <h2 class="section-title font-serif">Experience & Education</h2>
+                    <div class="section-divider"></div>
+                </div>
+                
+                <div class="timeline-container">
+                    <div class="timeline-line" aria-hidden="true"></div>
+                    
+                    <!-- Timeline Item 1: Ford Motors -->
+                    <article class="timeline-item timeline-work" data-animate="fade-left">
+                        <div class="timeline-dot" aria-hidden="true"></div>
+                        <div class="timeline-meta">
+                            <span class="timeline-date font-serif">Jul 2025 – May 2026</span>
+                            <span class="timeline-type-badge font-serif">Work</span>
+                        </div>
+                        <div class="timeline-card">
+                            <div class="card-header-block">
+                                <span class="timeline-tag">AI Intern</span>
+                                <h3 class="timeline-title font-serif">Ford Motors Private Limited</h3>
+                                <span class="timeline-location">Chennai, India</span>
+                            </div>
+                            <ul class="timeline-highlights">
+                                <li>Built <strong>LLM-powered systems</strong> for manufacturing quality analysis, enabling automated issue classification and root cause analysis.</li>
+                                <li>Developed and deployed <strong>GenAI APIs using FastAPI</strong> to integrate AI capabilities into enterprise workflows.</li>
+                                <li>Optimized <strong>BigQuery data pipelines</strong> operating at GB–TB scale, reducing processing time by approximately <span class="metric-badge">30%</span>.</li>
+                                <li>Designed a <strong>RAG-based enterprise knowledge platform</strong> over <span class="metric-badge">2,000+ docs</span> using hybrid retrieval with FAISS and BM25.</li>
+                                <li>Improved retrieval efficiency, indexing performance, and system reliability through optimized vector indexing and pipeline enhancements.</li>
+                                <li>Collaborated on AI-driven automation solutions to improve manufacturing quality analysis, knowledge discovery, and decision support.</li>
+                            </ul>
+                            <div class="timeline-tech-tags">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">FastAPI</span>
+                                <span class="tech-tag">GCP BigQuery</span>
+                                <span class="tech-tag">FAISS</span>
+                                <span class="tech-tag">BM25</span>
+                                <span class="tech-tag">LLMs</span>
+                                <span class="tech-tag">LangChain</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Timeline Item 2: Clowak Innovations -->
+                    <article class="timeline-item timeline-work" data-animate="fade-right">
+                        <div class="timeline-dot" aria-hidden="true"></div>
+                        <div class="timeline-meta">
+                            <span class="timeline-date font-serif">Jan 2023 – Mar 2023</span>
+                            <span class="timeline-type-badge font-serif">Work</span>
+                        </div>
+                        <div class="timeline-card">
+                            <div class="card-header-block">
+                                <span class="timeline-tag">Project Intern</span>
+                                <h3 class="timeline-title font-serif">Clowak Innovations (VIT-TBI)</h3>
+                                <span class="timeline-location">Vellore, India</span>
+                            </div>
+                            <ul class="timeline-highlights">
+                                <li>Developed a <strong>React Native mobile application</strong> for user interaction and real-time system monitoring.</li>
+                                <li>Integrated <strong>Google Firebase</strong> for authentication, login management, and cloud-based data storage.</li>
+                                <li>Connected and integrated electronic hardware components including headlights, side stand, indicators, and sensors with the instrumentation cluster.</li>
+                                <li>Collaborated on embedded and mobile integration workflows to improve vehicle instrumentation and monitoring capabilities.</li>
+                            </ul>
+                            <div class="timeline-tech-tags">
+                                <span class="tech-tag">React Native</span>
+                                <span class="tech-tag">Firebase</span>
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">Hardware Integration</span>
+                                <span class="tech-tag">IoT</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Timeline Item 3: M.Tech VIT -->
+                    <article class="timeline-item timeline-education" data-animate="fade-left">
+                        <div class="timeline-dot" aria-hidden="true"></div>
+                        <div class="timeline-meta">
+                            <span class="timeline-date font-serif">2024 – 2026</span>
+                            <span class="timeline-type-badge font-serif">Education</span>
+                        </div>
+                        <div class="timeline-card">
+                            <div class="card-header-block">
+                                <span class="timeline-tag">M.Tech. Computer Science & Engineering</span>
+                                <h3 class="timeline-title font-serif">Vellore Institute of Technology</h3>
+                                <span class="timeline-location">Chennai, India</span>
+                            </div>
+                            <p class="timeline-desc">
+                                Specialization in advanced artificial intelligence, distributed database architectures, neural networks, and mathematical structures for computer science.
+                            </p>
+                            <div class="timeline-grade">
+                                <span>Academic Grade:</span>
+                                <span class="metric-badge">CGPA 8.81</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Timeline Item 4: B.Tech VIT -->
+                    <article class="timeline-item timeline-education" data-animate="fade-right">
+                        <div class="timeline-dot" aria-hidden="true"></div>
+                        <div class="timeline-meta">
+                            <span class="timeline-date font-serif">2020 – 2024</span>
+                            <span class="timeline-type-badge font-serif">Education</span>
+                        </div>
+                        <div class="timeline-card">
+                            <div class="card-header-block">
+                                <span class="timeline-tag">B.Tech. Electronics & Instrumentation Engineering</span>
+                                <h3 class="timeline-title font-serif">Vellore Institute of Technology</h3>
+                                <span class="timeline-location">Vellore, India</span>
+                            </div>
+                            <p class="timeline-desc">
+                                Core studies in electronic circuit design, microcontrollers, signals & systems, and sensors instrumentation with programming integration.
+                            </p>
+                            <div class="timeline-grade">
+                                <span>Academic Grade:</span>
+                                <span class="metric-badge">CGPA 8.17</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wave Divider 3 -->
+        <div class="wave-divider" aria-hidden="true">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="wave-path"></path>
+            </svg>
+        </div>
+
         <!-- Skills Section -->
         <section class="skills-section" id="skills">
             <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Skills & Technologies</h2>
-                    <div class="section-bar"></div>
+                <div class="section-header" data-animate="fade-up">
+                    <span class="section-label">03 / TOOLKIT</span>
+                    <h2 class="section-title font-serif">Skills & Technologies</h2>
+                    <div class="section-divider"></div>
                 </div>
                 
-                <div class="skills-grid">
+                <div class="skills-filter" data-animate="fade-up" data-delay="100">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="genai">GenAI & LLM</button>
+                    <button class="filter-btn" data-filter="ml">ML & Deep Learning</button>
+                    <button class="filter-btn" data-filter="backend">Backend Engineering</button>
+                    <button class="filter-btn" data-filter="cloud">Cloud & Data</button>
+                    <button class="filter-btn" data-filter="languages">Languages</button>
+                    <button class="filter-btn" data-filter="web">Web Dev</button>
+                </div>
+                
+                <div class="skills-grid" data-animate="fade-up" data-delay="200">
                     <!-- GenAI / LLM -->
-                    <div class="skills-category-card">
-                        <h3>GenAI & LLM</h3>
+                    <div class="skill-category-card" data-category="genai">
+                        <div class="glow-container" aria-hidden="true"></div>
+                        <div class="category-icon-wrapper" aria-hidden="true">
+                            <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                            </svg>
+                        </div>
+                        <h3 class="category-title font-serif">GenAI & LLM</h3>
+                        <p class="category-desc">
+                            Building enterprise-grade retrieval-augmented generation systems and prompt engineering pipelines.
+                        </p>
                         <div class="skills-list">
                             <span class="skill-badge">LLMs (GPT, Gemini, Llama)</span>
                             <span class="skill-badge">Retrieval-Augmented Generation (RAG)</span>
@@ -176,45 +444,90 @@
                     </div>
                     
                     <!-- Machine Learning / DL -->
-                    <div class="skills-category-card">
-                        <h3>Machine & Deep Learning</h3>
+                    <div class="skill-category-card" data-category="ml">
+                        <div class="glow-container" aria-hidden="true"></div>
+                        <div class="category-icon-wrapper" aria-hidden="true">
+                            <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="category-title font-serif">ML & Deep Learning</h3>
+                        <p class="category-desc">
+                            Designing and training neural architectures for classification, NLP, and signal analysis.
+                        </p>
                         <div class="skills-list">
                             <span class="skill-badge">TensorFlow</span>
                             <span class="skill-badge">Keras</span>
                             <span class="skill-badge">Scikit-learn</span>
-                            <span class="skill-badge">Convolutional Neural Networks (CNN)</span>
-                            <span class="skill-badge">Artificial Neural Networks (ANN)</span>
-                            <span class="skill-badge">Natural Language Processing (NLP)</span>
+                            <span class="skill-badge">CNN / ANN</span>
+                            <span class="skill-badge">NLP</span>
+                            <span class="skill-badge">Signal Preprocessing</span>
                         </div>
                     </div>
 
                     <!-- Backend Development -->
-                    <div class="skills-category-card">
-                        <h3>Backend Engineering</h3>
+                    <div class="skill-category-card" data-category="backend">
+                        <div class="glow-container" aria-hidden="true"></div>
+                        <div class="category-icon-wrapper" aria-hidden="true">
+                            <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                            </svg>
+                        </div>
+                        <h3 class="category-title font-serif">Backend Engineering</h3>
+                        <p class="category-desc">
+                            Architecting high-performance APIs and services powering AI-driven applications.
+                        </p>
                         <div class="skills-list">
                             <span class="skill-badge">FastAPI</span>
                             <span class="skill-badge">Flask</span>
                             <span class="skill-badge">Node.js</span>
                             <span class="skill-badge">Express.js</span>
                             <span class="skill-badge">RESTful APIs</span>
+                            <span class="skill-badge">Microservices</span>
                         </div>
                     </div>
 
                     <!-- Cloud & Databases -->
-                    <div class="skills-category-card">
-                        <h3>Cloud & Databases</h3>
+                    <div class="skill-category-card" data-category="cloud">
+                        <div class="glow-container" aria-hidden="true"></div>
+                        <div class="category-icon-wrapper" aria-hidden="true">
+                            <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"></path>
+                            </svg>
+                        </div>
+                        <h3 class="category-title font-serif">Cloud & Databases</h3>
+                        <p class="category-desc">
+                            Managing data infrastructure at scale across cloud platforms and relational/vector databases.
+                        </p>
                         <div class="skills-list">
                             <span class="skill-badge">GCP BigQuery</span>
-                            <span class="skill-badge">Google Firebase</span>
+                            <span class="skill-badge">Firebase</span>
                             <span class="skill-badge">AWS Cloud</span>
                             <span class="skill-badge">PostgreSQL</span>
-                            <span class="skill-badge">SQL</span>
+                            <span class="skill-badge">SQL / NoSQL</span>
                         </div>
                     </div>
 
                     <!-- Programming Languages -->
-                    <div class="skills-category-card">
-                        <h3>Languages</h3>
+                    <div class="skill-category-card" data-category="languages">
+                        <div class="glow-container" aria-hidden="true"></div>
+                        <div class="category-icon-wrapper" aria-hidden="true">
+                            <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="category-title font-serif">Languages</h3>
+                        <p class="category-desc">
+                            Polyglot engineering across systems logic, raw data queries, and application layers.
+                        </p>
                         <div class="skills-list">
                             <span class="skill-badge">Python</span>
                             <span class="skill-badge">Java</span>
@@ -226,8 +539,19 @@
                     </div>
 
                     <!-- Frontend Web Dev -->
-                    <div class="skills-category-card">
-                        <h3>Web Development</h3>
+                    <div class="skill-category-card" data-category="web">
+                        <div class="glow-container" aria-hidden="true"></div>
+                        <div class="category-icon-wrapper" aria-hidden="true">
+                            <svg class="category-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="9" y1="21" x2="9" y2="9"></line>
+                                <line x1="3" y1="9" x2="21" y2="9"></line>
+                            </svg>
+                        </div>
+                        <h3 class="category-title font-serif">Web Development</h3>
+                        <p class="category-desc">
+                            Crafting responsive interfaces and interactive full-stack application client experiences.
+                        </p>
                         <div class="skills-list">
                             <span class="skill-badge">HTML5</span>
                             <span class="skill-badge">CSS3 (Grid/Flexbox)</span>
@@ -239,361 +563,318 @@
             </div>
         </section>
 
-        <!-- Resume Section (Experience & Education) -->
-        <section class="resume-section" id="resume">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Experience & Education</h2>
-                    <div class="section-bar"></div>
-                </div>
-
-                <div class="resume-stacked-layout">
-                    <!-- Experience Column -->
-                    <div class="resume-block">
-                        <div class="column-header">
-                            <svg class="column-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-                            <h3>Work Experience</h3>
-                        </div>
-                        
-                        <div class="timeline">
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-header">
-                                    <span class="timeline-date">Jul 2025 – May 2026</span>
-                                    <h4>AI Intern</h4>
-                                    <span class="timeline-org">Ford Motors Private Limited</span>
-                                    <span class="timeline-loc">Chennai, India</span>
-                                </div>
-                                <div class="timeline-body">
-                                    <ul>
-                                        <li>Built <strong>LLM-powered systems</strong> for manufacturing quality analysis, enabling automated issue classification and root cause analysis.</li>
-                                        <li>Developed and deployed <strong>GenAI APIs using FastAPI</strong> to integrate AI capabilities into enterprise workflows.</li>
-                                        <li>Optimized <strong>BigQuery data pipelines</strong> operating at GB–TB scale, reducing processing time by approximately <strong>30%</strong>.</li>
-                                        <li>Designed a <strong>RAG-based enterprise knowledge platform</strong> over 2,000+ documents using hybrid retrieval with FAISS and BM25.</li>
-                                        <li>Improved retrieval efficiency, indexing performance, and system reliability through optimized vector indexing and pipeline enhancements.</li>
-                                        <li>Collaborated on AI-driven automation solutions to improve manufacturing quality analysis, knowledge discovery, and decision support.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-header">
-                                    <span class="timeline-date">Jan 2023 – Mar 2023</span>
-                                    <h4>Project Intern</h4>
-                                    <span class="timeline-org">Clowak Innovations (VIT-TBI)</span>
-                                    <span class="timeline-loc">Vellore, India</span>
-                                </div>
-                                <div class="timeline-body">
-                                    <ul>
-                                        <li>Developed a <strong>React Native mobile application</strong> for user interaction and real-time system monitoring.</li>
-                                        <li>Integrated <strong>Google Firebase</strong> for authentication, login management, and cloud-based data storage.</li>
-                                        <li>Connected and integrated electronic hardware components including headlights, side stand, indicators, and sensors with the instrumentation cluster.</li>
-                                        <li>Collaborated on embedded and mobile integration workflows to improve vehicle instrumentation and monitoring capabilities.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Education Column -->
-                    <div class="resume-block">
-                        <div class="column-header">
-                            <svg class="column-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>
-                            <h3>Education</h3>
-                        </div>
-                        
-                        <div class="timeline">
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-header">
-                                    <span class="timeline-date">2024 – 2026</span>
-                                    <h4>M.Tech. Computer Science & Engineering</h4>
-                                    <span class="timeline-org">Vellore Institute of Technology</span>
-                                    <span class="timeline-loc">Chennai, India</span>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="timeline-extra">Pursued postgraduate studies focusing on Advanced AI, Deep Learning, Algorithms, and Distributed Systems.</p>
-                                    <p class="timeline-gpa"><strong>CGPA: 8.81</strong></p>
-                                </div>
-                            </div>
-                            
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-header">
-                                    <span class="timeline-date">2020 – 2024</span>
-                                    <h4>B.Tech. Electronics & Instrumentation Engineering</h4>
-                                    <span class="timeline-org">Vellore Institute of Technology</span>
-                                    <span class="timeline-loc">Vellore, India</span>
-                                </div>
-                                <div class="timeline-body">
-                                    <p class="timeline-extra">Acquired strong fundamentals in systems design, hardware integrations, signal processing, and embedded controllers.</p>
-                                    <p class="timeline-gpa"><strong>CGPA: 8.17</strong></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- Wave Divider 4 -->
+        <div class="wave-divider wave-divider-alt" aria-hidden="true">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,1,321.39,56.44Z" class="wave-path"></path>
+            </svg>
+        </div>
 
         <!-- Projects Section -->
         <section class="projects-section" id="projects">
             <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Key Projects</h2>
-                    <div class="section-bar"></div>
+                <div class="section-header" data-animate="fade-up">
+                    <span class="section-label">04 / WORK</span>
+                    <h2 class="section-title font-serif">Key Projects</h2>
+                    <div class="section-divider"></div>
                 </div>
 
                 <div class="projects-grid">
                     <!-- Project 1: Mental Health Monitor -->
-                    <div class="project-card" data-project-id="mhm">
-                        <div class="project-card-glow"></div>
+                    <article class="project-card" data-animate="fade-up">
+                        <div class="glow-container" aria-hidden="true"></div>
                         <div class="project-content">
-                            <span class="project-tag">AI & Multi-Agent</span>
-                            <h3 class="project-title">Mental Health Monitor (MHM)</h3>
+                            <span class="project-category">AI & Multi-Agent</span>
+                            <h3 class="project-title font-serif">Mental Health Monitor (MHM)</h3>
                             <p class="project-desc">A multi-agent LLM-driven system providing context-aware conversational AI and a real-time analytics dashboard.</p>
-                            <div class="project-techs">
-                                <span>Python</span>
-                                <span>Flask</span>
-                                <span>DistilBERT</span>
-                                <span>pgvector</span>
-                                <span>LLMs</span>
+                            <p class="project-impact">
+                                <span class="impact-label">⚡ Impact:</span> Multi-agent orchestration with contextual memory using pgvector
+                            </p>
+                            <div class="project-tech-badges">
+                                <span class="tech-badge">Python</span>
+                                <span class="tech-badge">Flask</span>
+                                <span class="tech-badge">DistilBERT</span>
+                                <span class="tech-badge">pgvector</span>
+                                <span class="tech-badge">LLMs</span>
                             </div>
-                            <button class="project-link-btn">
-                                <span>View Details</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                            </button>
                         </div>
-                    </div>
+                    </article>
 
                     <!-- Project 2: Real-time ECG Analysis -->
-                    <div class="project-card" data-project-id="ecg">
-                        <div class="project-card-glow"></div>
+                    <article class="project-card" data-animate="fade-up" data-delay="100">
+                        <div class="glow-container" aria-hidden="true"></div>
                         <div class="project-content">
-                            <span class="project-tag">IoT & Deep Learning</span>
-                            <h3 class="project-title">Real-time ECG Analysis</h3>
-                            <p class="project-desc">IoT-based ECG signal acquisition and transmission system with a neural network for automated diagnosis.</p>
-                            <div class="project-techs">
-                                <span>Python</span>
-                                <span>Neural Networks</span>
-                                <span>IoT</span>
-                                <span>Signal Processing</span>
+                            <span class="project-category">IoT & Deep Learning</span>
+                            <h3 class="project-title font-serif">Real-time ECG Analysis</h3>
+                            <p class="project-desc">IoT-based ECG signal acquisition and transmission system with a neural network for automated cardiac diagnosis.</p>
+                            <p class="project-impact">
+                                <span class="impact-label">⚡ Impact:</span> Research published and indexed in IEEE i-PACT 2023
+                            </p>
+                            <div class="project-tech-badges">
+                                <span class="tech-badge">Python</span>
+                                <span class="tech-badge">Neural Networks</span>
+                                <span class="tech-badge">IoT Hardware</span>
+                                <span class="tech-badge">Signal Preprocessing</span>
                             </div>
-                            <button class="project-link-btn">
-                                <span>View Details</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                            </button>
                         </div>
-                    </div>
+                    </article>
 
                     <!-- Project 3: Energy Meter Reading -->
-                    <div class="project-card" data-project-id="energy">
-                        <div class="project-card-glow"></div>
+                    <article class="project-card" data-animate="fade-up" data-delay="200">
+                        <div class="glow-container" aria-hidden="true"></div>
                         <div class="project-content">
-                            <span class="project-tag">Computer Vision</span>
-                            <h3 class="project-title">Energy Meter OCR System</h3>
-                            <p class="project-desc">Web application using Azure Computer Vision and Firebase to parse and log readings from meter photos.</p>
-                            <div class="project-techs">
-                                <span>Azure CV</span>
-                                <span>Firebase</span>
-                                <span>HTML/CSS</span>
-                                <span>JavaScript</span>
+                            <span class="project-category">Computer Vision</span>
+                            <h3 class="project-title font-serif">Energy Meter OCR System</h3>
+                            <p class="project-desc">Web application using Azure Computer Vision and Firebase to parse, log, and track readings from meter photographs.</p>
+                            <p class="project-impact">
+                                <span class="impact-label">⚡ Impact:</span> Automates manual billing logs by extracting values from camera captures
+                            </p>
+                            <div class="project-tech-badges">
+                                <span class="tech-badge">Azure CV</span>
+                                <span class="tech-badge">Firebase</span>
+                                <span class="tech-badge">HTML/CSS</span>
+                                <span class="tech-badge">JavaScript</span>
                             </div>
-                            <button class="project-link-btn">
-                                <span>View Details</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                            </button>
                         </div>
-                    </div>
+                    </article>
 
                     <!-- Project 4: Assisted Emergency Robot -->
-                    <div class="project-card" data-project-id="robot">
-                        <div class="project-card-glow"></div>
+                    <article class="project-card" data-animate="fade-up" data-delay="300">
+                        <div class="glow-container" aria-hidden="true"></div>
                         <div class="project-content">
-                            <span class="project-tag">Robotics & IoT</span>
-                            <h3 class="project-title">Emergency Fire Brigade Robot</h3>
+                            <span class="project-category">Robotics & IoT</span>
+                            <h3 class="project-title font-serif">Emergency Fire Brigade Robot</h3>
                             <p class="project-desc">Bluetooth-controlled emergency robot for hazardous environments equipped with environmental gas & flame sensors.</p>
-                            <div class="project-techs">
-                                <span>Arduino</span>
-                                <span>Sensors</span>
-                                <span>Bluetooth</span>
-                                <span>Embedded C</span>
+                            <p class="project-impact">
+                                <span class="impact-label">⚡ Impact:</span> Dual-sensor threshold alarm warning for gas leaks & open fires
+                            </p>
+                            <div class="project-tech-badges">
+                                <span class="tech-badge">Arduino</span>
+                                <span class="tech-badge">Sensors</span>
+                                <span class="tech-badge">Bluetooth</span>
+                                <span class="tech-badge">Embedded C</span>
                             </div>
-                            <button class="project-link-btn">
-                                <span>View Details</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                            </button>
                         </div>
-                    </div>
+                    </article>
 
                     <!-- Project 5: CNN Emotion Classification -->
-                    <div class="project-card" data-project-id="emotion">
-                        <div class="project-card-glow"></div>
+                    <article class="project-card" data-animate="fade-up" data-delay="400">
+                        <div class="glow-container" aria-hidden="true"></div>
                         <div class="project-content">
-                            <span class="project-tag">NLP / Deep Learning</span>
-                            <h3 class="project-title">CNN Emotion Classification</h3>
+                            <span class="project-category">NLP / Deep Learning</span>
+                            <h3 class="project-title font-serif">CNN Emotion Classification</h3>
                             <p class="project-desc">End-to-end NLP classifier mapping text queries to specific emotions using CNN architectures & NLTK.</p>
-                            <div class="project-techs">
-                                <span>Python</span>
-                                <span>Keras</span>
-                                <span>Scikit-learn</span>
-                                <span>NLTK</span>
-                                <span>Pandas</span>
+                            <p class="project-impact">
+                                <span class="impact-label">⚡ Impact:</span> Replaces recurrent pipelines with fast 1D CNN mappings
+                            </p>
+                            <div class="project-tech-badges">
+                                <span class="tech-badge">Python</span>
+                                <span class="tech-badge">Keras</span>
+                                <span class="tech-badge">Scikit-learn</span>
+                                <span class="tech-badge">NLTK</span>
+                                <span class="tech-badge">Pandas</span>
                             </div>
-                            <button class="project-link-btn">
-                                <span>View Details</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                            </button>
                         </div>
-                    </div>
-
+                    </article>
                 </div>
             </div>
         </section>
 
-        <!-- Achievements Section (Publications, Certifications & Hackathons) -->
+        <!-- Wave Divider 5 -->
+        <div class="wave-divider" aria-hidden="true">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="wave-path"></path>
+            </svg>
+        </div>
+
+        <!-- Achievements Section -->
         <section class="achievements-section" id="achievements">
             <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Publications & Achievements</h2>
-                    <div class="section-bar"></div>
+                <div class="section-header" data-animate="fade-up">
+                    <span class="section-label">05 / RECOGNITION</span>
+                    <h2 class="section-title font-serif">Publications & Achievements</h2>
+                    <div class="section-divider"></div>
                 </div>
 
                 <div class="achievements-grid">
                     <!-- Publication Card -->
-                    <div class="achievement-card publication">
-                        <div class="achievement-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    <article class="achievement-card" data-animate="fade-up">
+                        <div class="achievement-icon-wrapper" aria-hidden="true">
+                            <svg class="achievement-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
                         </div>
                         <div class="achievement-content">
-                            <span class="achievement-tag">IEEE Publication</span>
-                            <h3 class="achievement-title">Real-time ECG Analysis and Classification using Neural Networks in IoT devices</h3>
+                            <span class="achievement-tag font-serif">IEEE Publication</span>
+                            <h3 class="achievement-title font-serif">Real-time ECG Analysis and Classification using Neural Networks in IoT devices</h3>
                             <span class="achievement-meta">IEEE i-PACT 2023 | DOI: 10.1109/i-PACT58649.2023.10434526</span>
-                            <ul class="achievement-details">
-                                <li>Developed a portable hardware setup for real-time ECG signal acquisition and preprocessing.</li>
-                                <li>Implemented an IoT-based data transmission pipeline to send ECG signals to a dedicated system for analysis.</li>
-                                <li>Used a pre-trained CNN model to categorize arrhythmia and health indicators, sending results back to mobile devices in real-time.</li>
-                            </ul>
+                            <p class="achievement-desc">
+                                Co-authored research establishing portable sensors configuration feeding a machine learning diagnostic model. Achieved remote cardiac arrhythmia warnings over IoT connectivity.
+                            </p>
                         </div>
-                    </div>
+                    </article>
 
                     <!-- Certifications Card -->
-                    <div class="achievement-card certification">
-                        <div class="achievement-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                    <article class="achievement-card" data-animate="fade-up" data-delay="100">
+                        <div class="achievement-icon-wrapper" aria-hidden="true">
+                            <svg class="achievement-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2z"></polygon>
+                                <polyline points="2 17 12 22 22 17"></polyline>
+                                <polyline points="2 12 12 17 22 12"></polyline>
+                            </svg>
                         </div>
                         <div class="achievement-content">
-                            <span class="achievement-tag">Professional Certifications</span>
-                            <h3 class="achievement-title">Cloud & Development Credentials</h3>
+                            <span class="achievement-tag font-serif">Certifications</span>
+                            <h3 class="achievement-title font-serif">Professional Credentials</h3>
                             <div class="certs-list">
                                 <div class="cert-item">
                                     <strong>AWS Certified Solutions Architect – Associate</strong>
-                                    <span>Amazon Web Services</span>
+                                    <span class="cert-provider">Amazon Web Services</span>
                                 </div>
                                 <div class="cert-item">
                                     <strong>Python Programming</strong>
-                                    <span>GUVI Geek Network</span>
+                                    <span class="cert-provider">GUVI Geek Network</span>
                                 </div>
                                 <div class="cert-item">
                                     <strong>Full Stack Web Development</strong>
-                                    <span>SHAPEAI</span>
+                                    <span class="cert-provider">SHAPEAI</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </article>
 
                     <!-- Hackathons Card -->
-                    <div class="achievement-card hackathon">
-                        <div class="achievement-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2z"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                    <article class="achievement-card" data-animate="fade-up" data-delay="200">
+                        <div class="achievement-icon-wrapper" aria-hidden="true">
+                            <svg class="achievement-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="8" r="7"></circle>
+                                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                            </svg>
                         </div>
                         <div class="achievement-content">
-                            <span class="achievement-tag">Hackathons</span>
-                            <h3 class="achievement-title">Rapid Prototyping & Teamwork</h3>
+                            <span class="achievement-tag font-serif">Hackathons</span>
+                            <h3 class="achievement-title font-serif">Prototyping Competitions</h3>
                             <div class="hackathons-list">
                                 <div class="hackathon-item">
                                     <div class="hack-header">
                                         <strong>Daimler Hackathon</strong>
-                                        <span class="hack-date">Industrial & Automotive IoT</span>
+                                        <span class="hack-focus">Industrial IoT focus</span>
                                     </div>
-                                    <p>Collaborated in a cross-functional team to analyze industrial use cases, developing rapid IoT prototypes and presenting scalable solution ideas for enterprise manufacturing workflows.</p>
+                                    <p class="hack-desc">Collaborated on designing industrial automotive data flows and prototyping hardware tracking triggers.</p>
                                 </div>
                                 <div class="hackathon-item">
                                     <div class="hack-header">
                                         <strong>DATASET '24 Hackathon</strong>
-                                        <span class="hack-date">Data-Centric AI/ML</span>
+                                        <span class="hack-focus">Data Science modeling</span>
                                     </div>
-                                    <p>Participated in high-pressure analytical problem-solving, exploring dataset interpretation, data preprocessing, pattern analysis, and model-oriented approaches to extract insights under competitive timelines.</p>
+                                    <p class="hack-desc">Analyzed massive data sets for feature extraction and model validation in high-pressure competition timelines.</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 </div>
             </div>
         </section>
 
+        <!-- Wave Divider 6 -->
+        <div class="wave-divider wave-divider-alt" aria-hidden="true">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,1,321.39,56.44Z" class="wave-path"></path>
+            </svg>
+        </div>
+
         <!-- Contact Section -->
         <section class="contact-section" id="contact">
             <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Get In Touch</h2>
-                    <div class="section-bar"></div>
+                <div class="section-header" data-animate="fade-up">
+                    <span class="section-label">06 / CONNECT</span>
+                    <h2 class="section-title font-serif">Get In Touch</h2>
+                    <div class="section-divider"></div>
                 </div>
 
                 <div class="contact-grid">
-                    <div class="contact-info">
-                        <h3>Let's Collaborate</h3>
-                        <p class="contact-message">I am currently open to exciting full-time engineering roles, collaborative projects, or research opportunities. Whether you have a question or just want to connect, feel free to reach out!</p>
+                    <div class="contact-info" data-animate="fade-up">
+                        <h3 class="contact-subtitle font-serif">Let's Build Something Meaningful</h3>
+                        <p class="contact-text">
+                            I am currently open to full-time engineering roles, collaborative research, and backend AI system building opportunities. Whether you have a project idea, a job posting, or just want to connect, feel free to reach out.
+                        </p>
                         
                         <div class="contact-links-list">
-                            <a href="mailto:saiprasathpgm2003@gmail.com" class="contact-detail-item">
-                                <div class="detail-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            <a href="mailto:saiprasathpgm2003@gmail.com" class="contact-detail-item" aria-label="Email Sai Prasath S">
+                                <div class="detail-icon-wrapper" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
                                 </div>
-                                <span>saiprasathpgm2003@gmail.com</span>
+                                <span class="contact-detail-text">saiprasathpgm2003@gmail.com</span>
                             </a>
-                            <a href="https://linkedin.com/in/sai-prasath-s" target="_blank" rel="noopener noreferrer" class="contact-detail-item">
-                                <div class="detail-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                            <a href="https://linkedin.com/in/sai-prasath-s" target="_blank" rel="noopener noreferrer" class="contact-detail-item" aria-label="LinkedIn Profile">
+                                <div class="detail-icon-wrapper" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                        <rect x="2" y="9" width="4" height="12"></rect>
+                                        <circle cx="4" cy="4" r="2"></circle>
+                                    </svg>
                                 </div>
-                                <span>linkedin.com/in/sai-prasath-s</span>
+                                <span class="contact-detail-text">linkedin.com/in/sai-prasath-s</span>
                             </a>
-                            <a href="https://github.com/saiprasaths" target="_blank" rel="noopener noreferrer" class="contact-detail-item">
-                                <div class="detail-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                            <a href="https://github.com/saiprasaths" target="_blank" rel="noopener noreferrer" class="contact-detail-item" aria-label="GitHub Profile">
+                                <div class="detail-icon-wrapper" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                                    </svg>
                                 </div>
-                                <span>github.com/saiprasaths</span>
+                                <span class="contact-detail-text">github.com/saiprasaths</span>
+                            </a>
+                            <a href="https://www.kaggle.com/saiprasaths" target="_blank" rel="noopener noreferrer" class="contact-detail-item" aria-label="Kaggle Profile">
+                                <div class="detail-icon-wrapper" aria-hidden="true">
+                                    <!-- Kaggle custom SVG logo -->
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 22H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3z"></path>
+                                        <path d="M8 7v10"></path>
+                                        <path d="M16 7l-5 5 5 5"></path>
+                                        <path d="M11 12h1"></path>
+                                    </svg>
+                                </div>
+                                <span class="contact-detail-text">kaggle.com/saiprasaths</span>
                             </a>
                         </div>
                     </div>
 
-                    <div class="contact-form-card">
-                        <!-- We target Formspree or custom handler. User can update target -->
+                    <div class="contact-form-card" data-animate="fade-up" data-delay="150">
                         <form id="contactForm" class="contact-form">
-                            <!-- Web3Forms Integration Settings -->
+                            <!-- Web3Forms Config -->
                             <input type="hidden" name="access_key" value="5024f1ed-a2e8-4bcd-8863-f5c7b69a10af">
-                            <input type="hidden" name="subject" value="New Contact Form Submission - Portfolio Website">
-                            <input type="hidden" name="from_name" value="Portfolio Contact Form">
-                            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                            <input type="hidden" name="subject" value="New Contact Form Submission - Portfolio">
+                            <input type="hidden" name="from_name" value="Portfolio Contact">
+                            <input type="checkbox" name="botcheck" class="hidden" style="display: none;" aria-hidden="true">
 
                             <div class="form-group">
                                 <label for="name">Full Name</label>
-                                <input type="text" id="name" name="name" required placeholder="John Doe">
+                                <input type="text" id="name" name="name" required placeholder="Your name">
                             </div>
+                            
                             <div class="form-group">
                                 <label for="email">Email Address</label>
-                                <input type="email" id="email" name="email" required placeholder="john@example.com">
+                                <input type="email" id="email" name="email" required placeholder="name@domain.com">
                             </div>
+                            
                             <div class="form-group">
                                 <label for="message">Your Message</label>
-                                <textarea id="message" name="message" rows="5" required placeholder="Tell me about your project..."></textarea>
+                                <textarea id="message" name="message" rows="5" required placeholder="Type your message here..."></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">
+                            
+                            <button type="submit" id="submitBtn" class="btn btn-primary btn-block">
                                 <span>Send Message</span>
-                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                </svg>
                             </button>
-                            <div id="formStatus" class="form-status"></div>
+                            
+                            <div id="formStatus" class="form-status" role="status"></div>
                         </form>
                     </div>
                 </div>
@@ -605,61 +886,16 @@
     <footer class="footer">
         <div class="container footer-container">
             <p>&copy; 2026 Sai Prasath S. All rights reserved.</p>
-            <p class="footer-design">Designed & Built with HTML, CSS, JS</p>
+            <p class="footer-design">Designed & Built with HTML, CSS, JavaScript</p>
         </div>
     </footer>
 
     <!-- Scroll to Top Button -->
-    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top" title="Scroll to top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
     </button>
-
-    <!-- Projects Detail Dialog (Modal Overlay) -->
-    <dialog id="projectModal" class="project-modal">
-        <div class="modal-wrapper">
-            <button class="modal-close" id="modalCloseBtn" aria-label="Close details">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-            <div class="modal-body" id="modalBody">
-                <!-- Content injected via JavaScript -->
-            </div>
-        </div>
-    </dialog>
-
-    <!-- Resume Viewer Dialog -->
-    <dialog id="resumeModal" class="resume-modal">
-        <div class="resume-modal-wrapper">
-            <div class="resume-modal-header">
-                <span class="resume-modal-title">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                    Sai Prasath S — Resume
-                </span>
-                <div class="resume-modal-actions">
-                    <a href="assets/resume.pdf" download="Sai_Prasath_S_Resume.pdf" class="btn btn-primary btn-sm" aria-label="Download Resume">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                        <span>Download</span>
-                    </a>
-                    <button class="modal-close" id="resumeCloseBtn" aria-label="Close resume viewer">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </button>
-                </div>
-            </div>
-            <div class="resume-iframe-wrapper">
-                <iframe
-                    id="resumeIframe"
-                    src=""
-                    title="Sai Prasath S Resume"
-                    class="resume-iframe"
-                    aria-label="Resume PDF viewer">
-                    <p>Your browser does not support PDF preview.
-                        <a href="assets/resume.pdf" download="Sai_Prasath_S_Resume.pdf">Download it instead</a>.
-                    </p>
-                </iframe>
-            </div>
-        </div>
-    </dialog>
 
     <!-- JS Logic -->
     <script src="script.js"></script>
