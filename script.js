@@ -69,74 +69,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let isTransitioning = false;
 
     themeToggleBtn.addEventListener('click', (e) => {
-        if (isTransitioning) return;
-
-        // Disable animations if prefers-reduced-motion is active
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        
         const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        if (prefersReducedMotion || !transitionOverlay) {
-            // Instant transition
-            currentTheme = nextTheme;
-            document.documentElement.setAttribute('data-theme', currentTheme);
-            localStorage.setItem('theme', currentTheme);
-            updateThemeColorMeta(currentTheme);
-            return;
-        }
-
-        isTransitioning = true;
-
-        // Circular Reveal Transition
-        const rect = themeToggleBtn.getBoundingClientRect();
-        const clickX = rect.left + rect.width / 2;
-        const clickY = rect.top + rect.height / 2;
-        
-        transitionOverlay.style.setProperty('--click-x', `${clickX}px`);
-        transitionOverlay.style.setProperty('--click-y', `${clickY}px`);
-        
-        // Prepare overlay colors based on the target theme
-        if (nextTheme === 'light') {
-            transitionOverlay.style.backgroundColor = '#FDFBF7';
-        } else {
-            transitionOverlay.style.backgroundColor = '#1C1A17';
-        }
-
-        transitionOverlay.classList.add('animating');
-
-        // Swap the theme tag halfway through reveal (approx 400ms)
-        setTimeout(() => {
-            currentTheme = nextTheme;
-            document.documentElement.setAttribute('data-theme', currentTheme);
-            localStorage.setItem('theme', currentTheme);
-            updateThemeColorMeta(currentTheme);
-        }, 400);
-
-        // Reset overlay when transition ends
-        setTimeout(() => {
-            transitionOverlay.classList.remove('animating');
-            isTransitioning = false;
-        }, 850);
+        currentTheme = nextTheme;
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        localStorage.setItem('theme', currentTheme);
+        updateThemeColorMeta(currentTheme);
     });
 
     // ==========================================================================
     // 3. Dynamic Greeting & Status Badge
     // ==========================================================================
-    const heroGreeting = document.getElementById('heroGreeting');
-    const statusBadge = document.getElementById('statusBadge');
-    
-    if (heroGreeting) {
-        const hour = new Date().getHours();
-        let greeting = 'Hello';
-        if (hour >= 5 && hour < 12) {
-            greeting = 'Good morning';
-        } else if (hour >= 12 && hour < 17) {
-            greeting = 'Good afternoon';
-        } else {
-            greeting = 'Good evening';
-        }
-        heroGreeting.textContent = `${greeting}, I'm`;
-    }
+        const statusBadge = document.getElementById('statusBadge');
 
     if (statusBadge) {
         const badgeText = statusBadge.querySelector('.status-text');
@@ -587,4 +530,77 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // ==========================================================================
+    // 17. Mobile Experience Highlights Toggler (UX Length Reduction)
+    // ==========================================================================
+    const initMobileHighlights = () => {
+        const isMobile = window.innerWidth < 768;
+        const cards = document.querySelectorAll('.timeline-card');
+        
+        cards.forEach(card => {
+            const highlightsList = card.querySelector('.timeline-highlights');
+            if (!highlightsList) return;
+            
+            const listItems = highlightsList.querySelectorAll('li');
+            if (listItems.length <= 3) return;
+            
+            let toggleBtn = card.querySelector('.toggle-highlights-btn');
+            
+            if (isMobile) {
+                // If button doesn't exist, create it
+                if (!toggleBtn) {
+                    const remainingCount = listItems.length - 3;
+                    toggleBtn = document.createElement('button');
+                    toggleBtn.className = 'toggle-highlights-btn';
+                    toggleBtn.innerHTML = `Show More Details (+${remainingCount})`;
+                    
+                    // Button styling
+                    toggleBtn.style.background = 'none';
+                    toggleBtn.style.border = 'none';
+                    toggleBtn.style.color = 'var(--color-primary)';
+                    toggleBtn.style.fontWeight = '600';
+                    toggleBtn.style.fontSize = '0.85rem';
+                    toggleBtn.style.cursor = 'pointer';
+                    toggleBtn.style.padding = '8px 0 0 0';
+                    toggleBtn.style.display = 'inline-flex';
+                    toggleBtn.style.alignItems = 'center';
+                    toggleBtn.style.gap = '4px';
+                    toggleBtn.style.transition = 'color 0.3s ease';
+                    
+                    highlightsList.parentNode.insertBefore(toggleBtn, highlightsList.nextSibling);
+                    
+                    let isExpanded = false;
+                    toggleBtn.addEventListener('click', () => {
+                        isExpanded = !isExpanded;
+                        for (let i = 3; i < listItems.length; i++) {
+                            listItems[i].style.display = isExpanded ? 'list-item' : 'none';
+                        }
+                        toggleBtn.innerHTML = isExpanded 
+                            ? 'Show Less' 
+                            : `Show More Details (+${remainingCount})`;
+                    });
+                }
+                
+                // Set initial collapsed state (unless it was already expanded)
+                if (toggleBtn.innerHTML.includes('Show More')) {
+                    for (let i = 3; i < listItems.length; i++) {
+                        listItems[i].style.display = 'none';
+                    }
+                }
+            } else {
+                // Reset to desktop view
+                if (toggleBtn) {
+                    toggleBtn.remove();
+                }
+                for (let i = 0; i < listItems.length; i++) {
+                    listItems[i].style.display = '';
+                }
+            }
+        });
+    };
+    
+    // Run on load and resize
+    initMobileHighlights();
+    window.addEventListener('resize', initMobileHighlights);
 });
